@@ -1,20 +1,3 @@
-/*
- * This file is part of Adblock Plus <http://adblockplus.org/>,
- * Copyright (C) 2006-2013 Eyeo GmbH
- *
- * Adblock Plus is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License version 3 as
- * published by the Free Software Foundation.
- *
- * Adblock Plus is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Adblock Plus.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 (function()
 {
   /* Events */
@@ -422,71 +405,6 @@
     }
   };
 
-
-  /* Web request blocking */
-
-  chrome.webRequest.onBeforeRequest.addListener(function(details)
-  {
-    // the high-level code isn't interested in requests that aren't related
-    // to a tab and since those can only be handled in Chrome, we ignore
-    // them here instead of in the browser independent high-level code.
-    if (details.tabId == -1)
-      return;
-
-    var tab = new Tab({id: details.tabId});
-    var frames = framesOfTabs.get(tab);
-
-    if (!frames)
-    {
-      frames = [];
-      framesOfTabs.set(tab, frames);
-
-      // assume that the first request belongs to the top frame. Chrome
-      // may give the top frame the type "object" instead of "main_frame".
-      // https://code.google.com/p/chromium/issues/detail?id=281711
-      if (frameId == 0)
-        details.type = "main_frame";
-    }
-
-    var frameId;
-    if (details.type == "main_frame" || details.type == "sub_frame")
-    {
-      frameId = details.parentFrameId;
-      frames[details.frameId] = {url: details.url, parent: frameId};
-
-      // the high-level code isn't interested in top frame requests and
-      // since those can only be handled in Chrome, we ignore them here
-      // instead of in the browser independent high-level code.
-      if (details.type == "main_frame")
-        return;
-    }
-    else
-      frameId = details.frameId;
-
-    if (!(frameId in frames))
-    {
-      // the high-level code relies on the frame. So ignore the request if we
-      // don't even know the top-level frame. That can happen for example when
-      // the extension was just (re)loaded.
-      if (!(0 in frames))
-        return;
-
-      // however when the src of the frame is a javascript: or data: URL, we
-      // don't know the frame either. But since we know the top-level frame we
-      // can just pretend that we are in the top-level frame, in order to have
-      // at least most domain-based filter rules working.
-      frameId = 0;
-      if (details.type == "sub_frame")
-        frames[details.frameId].parent = frameId;
-    }
-
-    var frame = new Frame({id: frameId, tab: tab});
-
-    for (var i = 0; i < ext.webRequest.onBeforeRequest._listeners.length; i++)
-    {
-      
-    }
-  }, {urls: ["<all_urls>"]}, ["blocking"]);
 
 
   /* API */

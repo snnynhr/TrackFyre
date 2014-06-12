@@ -1,38 +1,9 @@
-var FilterStorage = require("filterStorage").FilterStorage;
 var ElemHide = require("elemHide").ElemHide;
-var defaultMatcher = require("matcher").defaultMatcher;
+//var defaultMatcher = require("matcher").defaultMatcher;
 var Prefs = require("prefs").Prefs;
-var Synchronizer = require("synchronizer").Synchronizer;
 var Utils = require("utils").Utils;
-var Notification = require("notification").Notification;
-
-function removeDeprecatedOptions()
-{
-  var deprecatedOptions = ["specialCaseYouTube", "experimental", "disableInlineTextAds"];
-  deprecatedOptions.forEach(function(option)
-  {
-    if (option in localStorage)
-      delete localStorage[option];
-  });
-}
-
-// Remove deprecated options before we do anything else.
-removeDeprecatedOptions();
 
 var activeNotification = null;
-
-// Adds or removes browser action icon according to options.
-function refreshIconAndContextMenu(tab)
-{
-  if(!/^https?:/.test(tab.url))
-    return;
-
-  var iconFilename;
-  iconFilename = "icons/tf-19.png";
-
-  tab.browserAction.setIcon(iconFilename);
-  ext.contextMenus.showMenuItems();
-}
 
 function setContextMenu()
 {
@@ -88,29 +59,6 @@ function openOptions(callback)
   });
 }
 
-function prepareNotificationIconAndPopup()
-{
-  activeNotification.onClicked = function()
-  {
-    activeNotification = null;
-  };
-}
-
-function showNotification(notification)
-{
-  activeNotification = notification;
-
-  if (activeNotification.severity === "critical"
-      && typeof webkitNotifications !== "undefined")
-  {
-    var notification = webkitNotifications.createHTMLNotification("notification.html");
-    notification.show();
-    notification.addEventListener("close", prepareNotificationIconAndPopup);
-  }
-  else
-    prepareNotificationIconAndPopup();
-}
-
 ext.onMessage.addListener(function (msg, sender, sendResponse)
 {
   switch (msg.type)
@@ -155,19 +103,6 @@ ext.onMessage.addListener(function (msg, sender, sendResponse)
         return;
       }
       break;
-    case "add-filters":
-      if (msg.filters && msg.filters.length)
-      {
-        for (var i = 0; i < msg.filters.length; i++)
-          FilterStorage.addFilter(Filter.fromText(msg.filters[i]));
-      }
-      break;
-    case "add-subscription":
-      openOptions(function(tab)
-      {
-        tab.sendMessage(msg);
-      });
-      break;
     case "add-key-exception":
       processKeyException(msg.token, sender.tab, sender.frame);
       break;
@@ -199,24 +134,6 @@ ext.onMessage.addListener(function (msg, sender, sendResponse)
   }
 });
 
-// Show icon as browser action for all tabs that already exist
-ext.windows.getAll(function(windows)
-{
-  for (var i = 0; i < windows.length; i++)
-  {
-    windows[i].getAllTabs(function(tabs)
-    {
-      tabs.forEach(refreshIconAndContextMenu);
-    });
-  }
-});
-
-// Update icon if a tab changes location
-ext.tabs.onLoading.addListener(function(tab)
-{
-  tab.sendMessage({type: "clickhide-deactivate"});
-  refreshIconAndContextMenu(tab);
-});
 
 setTimeout(function()
 {

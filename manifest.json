@@ -1,6 +1,6 @@
 {
    "background": {
-      "scripts": [ "ext/common.js", "ext/background.js", "lib/compat.js", "lib/io.js", "lib/adblockplus.js", "background.js" ]
+      "scripts": [ "ext/common.js", "ext/background.js", "lib/compat.js", "lib/adblockplus.js", "background.js" ]
    },
    "browser_action": {
       "default_icon": "icons/tf-19.png",
@@ -32,6 +32,6 @@
    "name": "TrackFyre",
    "options_page": "options.html",
    "permissions": [ "activeTab", "storage", "tabs", "http://*/*", "https://*/*", "contextMenus", "webRequest", "webRequestBlocking", "webNavigation", "unlimitedStorage", "notifications" ],
-   "version": "1.0",
+   "version": "1.0.1.4",
    "web_accessible_resources": [ "block.html" ]
 }
