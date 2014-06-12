@@ -32,6 +32,6 @@
    "name": "TrackFyre",
    "options_page": "options.html",
    "permissions": [ "activeTab", "storage", "tabs", "http://*/*", "https://*/*", "contextMenus", "webRequest", "webRequestBlocking", "webNavigation", "unlimitedStorage", "notifications" ],
-   "version": "1.0.1.4",
+   "version": "1.0.1.5",
    "web_accessible_resources": [ "block.html" ]
 }

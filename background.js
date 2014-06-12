@@ -1,5 +1,4 @@
 var ElemHide = require("elemHide").ElemHide;
-//var defaultMatcher = require("matcher").defaultMatcher;
 var Prefs = require("prefs").Prefs;
 var Utils = require("utils").Utils;
 
@@ -7,17 +6,14 @@ var activeNotification = null;
 
 function setContextMenu()
 {
-  if (Prefs.shouldShowBlockElementMenu)
+  if (true)
   {
-    // Register context menu item
-    ext.contextMenus.addMenuItem(ext.i18n.getMessage("block_element"), ["image", "video", "audio"], function(srcUrl, tab)
+    ext.contextMenus.addMenuItem("block_element", ["image", "video", "audio"], function(srcUrl, tab)
     {
       if (srcUrl)
         tab.sendMessage({type: "clickhide-new-filter", filter: srcUrl});
     });
   }
-  else
-    ext.contextMenus.removeMenuItems();
 }
 
 Prefs.addListener(function(name)
@@ -27,11 +23,6 @@ Prefs.addListener(function(name)
 });
 setContextMenu();
 
-/**
-  * Opens options tab or focuses an existing one, within the last focused window.
-  * @param {Function} callback  function to be called with the
-                                Tab object of the options tab
-  */
 function openOptions(callback)
 {
   ext.windows.getLastFocused(function(win)
@@ -63,45 +54,8 @@ ext.onMessage.addListener(function (msg, sender, sendResponse)
 {
   switch (msg.type)
   {
-    case "get-selectors":
-      var selectors = null;
-
-      if (false)
-      {
-        var noStyleRules = false;
-        var host = extractHostFromURL(sender.frame.url);
-        for (var i = 0; i < noStyleRulesHosts.length; i++)
-        {
-          var noStyleHost = noStyleRulesHosts[i];
-          if (host == noStyleHost || (host.length > noStyleHost.length &&
-                                      host.substr(host.length - noStyleHost.length - 1) == "." + noStyleHost))
-          {
-            noStyleRules = true;
-          }
-        }
-        selectors = ElemHide.getSelectorsForDomain(host, false);
-        if (noStyleRules)
-        {
-          selectors = selectors.filter(function(s)
-          {
-            return !/\[style[\^\$]?=/.test(s);
-          });
-        }
-      }
-
-      sendResponse(selectors);
-      break;
     case "should-collapse":
         sendResponse(false);
-      break;
-    case "get-domain-enabled-state":
-      // Returns whether this domain is in the exclusion list.
-      // The browser action popup asks us this.
-      if(sender.tab)
-      {
-        sendResponse({enabled: !isWhitelisted(sender.tab.url)});
-        return;
-      }
       break;
     case "add-key-exception":
       processKeyException(msg.token, sender.tab, sender.frame);
@@ -133,11 +87,3 @@ ext.onMessage.addListener(function (msg, sender, sendResponse)
       break;
   }
 });
-
-
-setTimeout(function()
-{
-  var notificationToShow = Notification.getNextToShow();
-  if (notificationToShow)
-    showNotification(notificationToShow);
-}, 3 * 60 * 1000);

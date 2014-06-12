@@ -102,8 +102,7 @@ header
   right: 10px;
   width: 8px;
   height: 8px;
-  background-image: url(popup.png);
-  background-position: -34px -89px;
+  background-image: url(tf-16.png);
 }
 
 footer
@@ -171,7 +170,7 @@ li li
   height: 15px;
   margin-right: 15px;
   vertical-align: top;
-  background-image: url(popup.png);
+  background-image: url(tf-16.png);
 }
 
 #enabled-yes strong
@@ -216,117 +215,6 @@ li li
 #clickhide-instructions
 {
   margin: 10px 15px;
-}
-
-#stats-container .icon
-{
-  background-position: -50px -49px;
-}
-
-
-#stats strong
-{
-  font-size: 15px;
-  line-height: 140%;
-}
-
-#share
-{
-  margin-top: 5px;
-  font-size: 12px;
-  color: #949494;
-}
-
-#share-box
-{
-  margin-top: 5px;
-  margin-left: -3px;
-}
-
-#share-box div[data-social]
-{
-  cursor: pointer;
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  margin: 3px 10px 3px 3px;
-  border-radius: 3px;
-  background-image: url(popup.png);
-}
-
-#share-box div[data-social]:hover
-{
-  margin: 0px 7px 0px 0px;
-  border: 3px solid #cdc6bd
-}
-
-#share-box div[data-social="facebook"]
-{
-  background-position: -1px -1px;
-}
-
-#share-box div[data-social="twitter"]
-{
-  background-position: -1px -34px;
-}
-
-#share-box div[data-social="gplus"]
-{
-  background-position: -1px -67px;
-}
-
-.collapse
-{
-  position: relative;
-  padding-right: 25px;
-}
-
-.collapse-icon
-{
-  display: inline-block;
-  position: absolute;
-  top: 13px;
-  right: 10px;
-  width: 11px;
-  height: 11px;
-  background-image: url(popup.png);
-  background-position: -34px -65px;
-}
-
-.collapsed .collapse-icon
-{
-  background-position: -34px -77px;
-}
-
-.collapsed .collapsable
-{
-  display: none;
-}
-
-.checkbox
-{
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  margin-right: 5px;
-  vertical-align: middle;
-  background-image: url(popup.png);
-  background-position: -34px -1px;
-}
-
-.checkbox:hover
-{
-  background-position: -34px -17px;
-}
-
-.checkbox[aria-checked="false"]
-{
-  background-position: -34px -33px;
-}
-
-.checkbox[aria-checked="false"]:hover
-{
-  background-position: -34px -49px;
 }
 
 label
